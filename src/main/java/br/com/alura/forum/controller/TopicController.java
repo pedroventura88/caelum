@@ -4,6 +4,8 @@ import br.com.alura.forum.dto.input.TopicSearchDto;
 import br.com.alura.forum.dto.output.TopicBriefOutputDto;
 import br.com.alura.forum.model.topic.domain.Topic;
 import br.com.alura.forum.repository.TopicRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,9 +26,10 @@ public class TopicController {
     }
 
     @GetMapping(value = "/api/search")
-    public List<TopicBriefOutputDto> listaPorStatusCategoria(TopicSearchDto topicSearchDto) {
-        return TopicBriefOutputDto.listFromTopics(
-                topicRepository.findAll(topicSearchDto.toSpecification()));
+    public Page<TopicBriefOutputDto> listaPorStatusCategoria(TopicSearchDto topicSearchDto, Pageable paginacao) {
+
+        Page<Topic> pagina = topicRepository.findAll(topicSearchDto.toSpecification(), paginacao);
+        return TopicBriefOutputDto.listFromTopics(pagina);
     }
 
     @GetMapping(value = "/api/topics", produces = MediaType.APPLICATION_JSON_VALUE)
