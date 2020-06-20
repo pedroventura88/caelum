@@ -18,4 +18,8 @@ public class UserService implements UserDetailsService {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario não encontrado"));
     }
+
+    public UserDetails loadUserById(Long userId) {
+        return userRepository.findById(userId).orElseThrow(NullPointerException::new);
+    }
 }
