@@ -1,6 +1,8 @@
 package br.com.alura.forum.repository;
 
+import br.com.alura.forum.dto.output.TopicOutputDto;
 import br.com.alura.forum.dto.output.TopicsStatistics;
+import br.com.alura.forum.model.User;
 import br.com.alura.forum.model.topic.domain.Topic;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -47,4 +49,7 @@ public interface TopicRepository extends JpaRepository<Topic, Long>, JpaSpecific
             " GROUP BY " +
             " category.id ")
     List<TopicsStatistics> findTopicsFromLastWeek(@Param("instant") Instant instant);
+
+    List<Topic> findByOwnerAndCreationInstantAfterOrderByCreationInstantAsc(User loggedUser, Instant oneHourAgo);
+
 }
